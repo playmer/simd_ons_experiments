@@ -23,6 +23,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <cstddef>
+
 #include "graphics_cpu.h"
 #include "graphics_sum.h"
 #include "graphics_blend.h"
