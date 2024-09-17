@@ -27,9 +27,10 @@
 # "There are many more known variants/revisions that we do not handle/detect."
 
 set(archdetect_c_code "
-#if defined(__arm__) || defined(__TARGET_ARCH_ARM) || defined(_M_ARM) || defined(_M_ARM64) || defined(_M_ARM64EC)
+#if defined(__arm__) || defined(__ARM_ARCH) || defined(__TARGET_ARCH_ARM) || defined(_M_ARM) || defined(_M_ARM64) || defined(_M_ARM64EC)
     #if defined(__ARM_ARCH)
-        #if __ARM_ARCH == 900 \
+        #if __ARM_ARCH == 9 \
+            || __ARM_ARCH == 900 \
             || __ARM_ARCH == 901 \
             || __ARM_ARCH == 902 \
             || __ARM_ARCH == 903 \
@@ -39,7 +40,8 @@ set(archdetect_c_code "
             || __ARM_ARCH == 907 \
             || __ARM_ARCH == 908
             #error cmake_ARCH armv9
-        #elif __ARM_ARCH == 800 \
+        #elif __ARM_ARCH == 8 \
+            || __ARM_ARCH == 800 \
             || __ARM_ARCH == 801 \
             || __ARM_ARCH == 802 \
             || __ARM_ARCH == 803 \
@@ -170,6 +172,9 @@ function(target_architecture output_var)
         if (NOT ARCH)
             set(ARCH unknown)
         endif()
+
+        # Uncomment to figure out what's going wrong.
+        #set(ARCH "${COMPILER_OUTPUT}")
     endif()
 
     set(${output_var} "${ARCH}" PARENT_SCOPE)
