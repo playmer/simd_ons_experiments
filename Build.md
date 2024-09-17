@@ -6,6 +6,34 @@ ONScripter-en has historically supported an absolute smorgasbord of platforms. F
 - Windows (MSYS2)
 - Linux
 
+## Unofficially Supported Targets
+Through CMake, we're slowly bringing online support for various new targets, as well as trying to expand compatability of some of our existing targets. If there's a platform you're interested in, please file an issue or submit a PR!
+
+> NOTE: This is just a draft, these aren't all updated or correct yet.
+
+| OS/Platform | Arch | Toolchain | Compiling | Linking | Runs Games |
+| -------- | ------- | -------  |  -------  |  -------  |  -------  |
+| Windows | x86 | mingw32 | ✅ | ✅ | ✅ |
+| Windows | x86_64 | mingw64 | ✅ | ✅ | ✅ |
+| Windows | x86 | MSVC | ❌ | ❌ | ❌ |
+| Windows | x86_64 | MSVC | ❌ | ❌ | ❌ |
+| Windows | ARM | MSVC | ❌ | ❌ | ❌ |
+| Windows | ARM64 | MSVC | ❌ | ❌ | ❌ |
+| Linux | x86_64 | gcc | ❌ | ❌ | ❌ |
+| Linux | x86 | gcc | ❌ | ❌ | ❌ |
+| Linux | ARM | gcc | ❌ | ❌ | ❌ |
+| Linux | ARM64 | gcc | ❌ | ❌ | ❌ |
+| Linux | x86_64 | clang | ❌ | ❌ | ❌ |
+| Linux | x86 | clang | ❌ | ❌ | ❌ |
+| Linux | ARM | clang | ❌ | ❌ | ❌ |
+| MacOS | ARM64 | clang | ❌ | ❌ | ❌ |
+| MacOS | x86_64 | clang | ❌ | ❌ | ❌ |
+| MacOS | PowerPC | [Retro68](https://github.com/autc04/Retro68) | ❌ | ❌ | ❌ |
+| PSP | MIPS | [PSPDEV](https://pspdev.github.io/installation.html) | ✅ | ✅ | ❌ |
+| Nintendo Switch | ARM64 | [devkitPro](https://github.com/devkitPro/pacman/releases) | ✅ | ✅ | ❌ |
+| Wii U | PowerPC | [devkitPro](https://github.com/devkitPro/pacman/releases) | ✅ | ✅ | ❌ |
+| Wii | PowerPC | [devkitPro](https://github.com/devkitPro/pacman/releases) | ✅ | ✅ | ❌ |
+| Original Xbox | x86 | [nxdk](https://github.com/XboxDev/nxdk) | ✅ | ✅ | ❌ |
 
 # Getting the code
 
@@ -75,35 +103,8 @@ make all
 The ONScripter-EN executable will be within the top level repo directory, the tools will be within the tools subdirectory.
 
 # CMake Instructions
-We're still working through getting CMake up and running on every combination, but here's a quick table to refer to. If there's a platform you're interested in, please file an issue or submit a PR!
 
-> NOTE: This is just a draft, these aren't all updated or correct yet.
-
-| OS/Platform | Arch | Toolchain | Compiling | Linking | Runs Games |
-| -------- | ------- | -------  |  -------  |  -------  |  -------  |
-| Windows | x86 | mingw32 | ✅ | ✅ | ✅ |
-| Windows | x86_64 | mingw64 | ✅ | ✅ | ✅ |
-| Windows | x86 | MSVC | ❌ | ❌ | ❌ |
-| Windows | x86_64 | MSVC | ❌ | ❌ | ❌ |
-| Windows | ARM | MSVC | ❌ | ❌ | ❌ |
-| Windows | ARM64 | MSVC | ❌ | ❌ | ❌ |
-| Linux | x86_64 | gcc | ❌ | ❌ | ❌ |
-| Linux | x86 | gcc | ❌ | ❌ | ❌ |
-| Linux | ARM | gcc | ❌ | ❌ | ❌ |
-| Linux | ARM64 | gcc | ❌ | ❌ | ❌ |
-| Linux | x86_64 | clang | ❌ | ❌ | ❌ |
-| Linux | x86 | clang | ❌ | ❌ | ❌ |
-| Linux | ARM | clang | ❌ | ❌ | ❌ |
-| MacOS | ARM64 | clang | ❌ | ❌ | ❌ |
-| MacOS | x86_64 | clang | ❌ | ❌ | ❌ |
-| MacOS | PowerPC | [Retro68](https://github.com/autc04/Retro68) | ❌ | ❌ | ❌ |
-| PSP | MIPS | [PSPDEV](https://pspdev.github.io/installation.html) | ✅ | ✅ | ❌ |
-| Nintendo Switch | ARM64 | [devkitPro](https://github.com/devkitPro/pacman/releases) | ✅ | ✅ | ❌ |
-| Wii U | PowerPC | [devkitPro](https://github.com/devkitPro/pacman/releases) | ✅ | ✅ | ❌ |
-| Wii | PowerPC | [devkitPro](https://github.com/devkitPro/pacman/releases) | ✅ | ✅ | ❌ |
-| Original Xbox | x86 | [nxdk](https://github.com/XboxDev/nxdk) | ✅ | ✅ | ❌ |
-
-The instructions should all be relatively similar.
+The instructions should all be relatively similar between platforms, but they're all a bit different.
 
 ## Windows
 
