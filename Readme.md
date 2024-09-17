@@ -1,0 +1,1 @@
+This is a temporary repo for testing some platform and SIMD detection changes, as well as some additional docs in/for ONScripter-EN. It's just a little easier to iterate these outside the repo. There should be a PR in the coming days, with the CMake side of this going into the respective CMake PR after the non-cmake changes land.
