@@ -5,6 +5,8 @@ project(simd_test LANGUAGES C CXX)
 include(cmake/TargetArch.cmake)
 target_architecture(ONS_TARGET_ARCH)
 message(STATUS "Target Architecture: ${ONS_TARGET_ARCH}")
+message(STATUS "System Name: ${CMAKE_SYSTEM_NAME}")
+
 
 add_executable(simd_test "")
 
@@ -65,8 +67,9 @@ elseif(${ONS_TARGET_ARCH} STREQUAL "i386")
         )
     endif()
 elseif(${ONS_TARGET_ARCH} STREQUAL "ppc" OR ${ONS_TARGET_ARCH} STREQUAL "ppc"
-        AND NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "NintendoWii"
-        AND NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "NintendoGameCube")
+        AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL NintendoWii
+        AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL NintendoGameCube
+        AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL CafeOS)
     set(ONS_PPC_ALTIVEC_AVAILIBLE 1)
     
     set_source_files_properties(

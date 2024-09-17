@@ -181,6 +181,22 @@ make
 
 This will provide the EBOOT.PBP which is the game executable. 
 
+## Wii U
+
+You'll need a toolchain, we test against the [instructions here](https://switchbrew.org/w/index.php?title=Setting_up_Development_Environment#Unix-like_platforms), specifically for Ubuntu. 
+
+Once you have the devKitPro's pacman installed, if you haven't already you can install the wiiu-dev toolchain:
+
+```
+sudo dkp-pacman -S wiiu-dev
+```
+
+The Wii U devKitPro toolchain has it's own toolchain file for CMake, so we'll need to use that when invoking CMake.
+
+```bash
+cmake -DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/WiiU.cmake ..
+make
+```
 
 ## Wii
 
@@ -196,6 +212,23 @@ The Wii devKitPro toolchain has it's own toolchain file for CMake, so we'll need
 
 ```bash
 cmake -DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake ..
+make
+```
+
+## Gamecube
+
+You'll need a toolchain, we test against the [instructions here](https://switchbrew.org/w/index.php?title=Setting_up_Development_Environment#Unix-like_platforms), specifically for Ubuntu. 
+
+Once you have the devKitPro's pacman installed, if you haven't already you can install the wii-dev toolchain:
+
+```
+sudo dkp-pacman -S gamecube-dev
+```
+
+The GameCube devKitPro toolchain has it's own toolchain file for CMake, so we'll need to use that when invoking CMake.
+
+```bash
+cmake -DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/GameCube.cmake ..
 make
 ```
 
