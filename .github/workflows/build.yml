@@ -151,6 +151,27 @@ jobs:
           cmake --preset=ninja -DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Switch.cmake -B build
           cmake --build build --config Release
             
+  devkitpro-ppc:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - toochain_file: WiiU
+          - toochain_file: Wii
+          - toochain_file: GameCube
+    name: ${{ matrix.toochain_file }}
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkitppc:latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: lukka/get-cmake@latest
+      
+      - name: Build
+        run: |
+          cmake --preset=ninja -DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/${{ matrix.toochain_file }}.cmake -B build
+          cmake --build build --config Release
   Xbox:
     strategy:
       fail-fast: false
