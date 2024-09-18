@@ -1,0 +1,94 @@
+name: build
+
+on:
+  push:
+    branches: [ "master", "ci", "main" ]
+  pull_request:
+    branches: [ "master", "ci", "main" ]
+
+jobs:
+  linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            cc: [gcc, clang]
+    
+    name: linux-${{ matrix.cc }}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: install dependencies (Linux)
+      run: |
+        sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe"
+        sudo apt-get update -y -qq
+        sudo apt-get install libasound2-dev libpulse-dev libwebp-dev libxrandr-dev tar ninja
+    - name: configure
+      env:
+        CC: ${{ matrix.cc }}
+      run: |
+        ./configure --with-internal-libs
+    - name: reconfigure extlibs (ogg)
+      run: |
+        cd extlib/src/libogg-1.3.5
+        autoreconf -fi
+        autoupdate
+    - name: build
+      run: |
+        cmake --preset=ninja -B build
+        cmake --build build --config Release
+        
+  windows:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            arch: [amd64, x86, arm64, arm]
+    
+    name: windows-msvc-${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build
+      run: |
+        "%ProgramFiles%\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat" -arch=${{ matrix.arch }} -host_arch=amd64
+        cmake --preset=ninja -B build
+        cmake --build build --config Release
+
+  PSP:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            cc: gcc
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: install dependencies (PSP)
+      run: |
+        sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe"
+        sudo apt-get update -y -qq
+        sudo apt-get install build-essential cmake pkgconf libreadline8 libusb-0.1 libgpgme11 libarchive-tools fakeroot curl zip
+    - name: Download and install PSPDEV SDK
+      env:
+        CC: ${{ matrix.cc }}
+      run: |
+        curl -OL https://github.com/pspdev/pspdev/releases/latest/download/pspdev-ubuntu-latest-x86_64.tar.gz
+        tar -xvf pspdev-ubuntu-latest-x86_64.tar.gz
+    - name: Build
+      run: |
+        export PSPDEV="$PWD/pspdev"
+        export PATH="$PATH:$PSPDEV/bin"
+        
+        cmake --preset=ninja -DCMAKE_TOOLCHAIN_FILE=${PSPDEV}/psp/share/pspdev.cmake -B build
+        cmake --build build --config Release
