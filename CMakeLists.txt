@@ -53,7 +53,10 @@ elseif(${ONS_TARGET_ARCH} STREQUAL "i386")
     
     set(ONS_X86_MMX_AVAILIBLE 1)
     set(ONS_X86_SSE_AVAILIBLE 1)
-    set(ONS_X86_SSE2_AVAILIBLE 1)
+    
+    if (NOT NXDK)
+        set(ONS_X86_SSE2_AVAILIBLE 1)
+    endif()
 
     if(ONS_COMPILER_FLAG_STYLE STREQUAL "GNU")
         set_source_files_properties(
