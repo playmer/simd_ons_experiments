@@ -52,7 +52,7 @@ jobs:
             env: i686
             arch: i686
             cc: gcc
-    name: windows-cmake-${{matrix.env}}
+    name: windows-${{matrix.sys}}
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -136,7 +136,21 @@ jobs:
           cmake --preset=ninja -DCMAKE_TOOLCHAIN_FILE=${PSPDEV}/psp/share/pspdev.cmake -B build
           cmake --build build --config Release
 
-          
+  
+  Switch:
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkita64:latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: lukka/get-cmake@latest
+      
+      - name: Build
+        run: |
+          cmake --preset=ninja -DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Switch.cmake -B build
+          cmake --build build --config Release
+            
   Xbox:
     strategy:
       fail-fast: false
@@ -162,13 +176,13 @@ jobs:
         run: |
           git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/XboxDev/nxdk.git
           cd nxdk
-          bin/activate
+          source bin/activate
           make NXDK_ONLY=y
           make tools
 
       - name: Build
         run: |
-          $PWD/nxdk/bin/activate
+          source $PWD/nxdk/bin/activate
           
           cmake --preset=ninja -DCMAKE_TOOLCHAIN_FILE=$NXDK_DIR/share/toolchain-nxdk.cmake -B build
           cmake --build build --config Release
