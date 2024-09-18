@@ -13,7 +13,9 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            cc: [gcc, clang]
+            cc: gcc
+          - os: ubuntu-latest
+            cc: clang
     
     name: linux-${{ matrix.cc }}
     runs-on: ${{ matrix.os }}
@@ -48,7 +50,13 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            arch: [amd64, x86, arm64, arm]
+            arch: amd64
+          - os: windows-latest
+            arch: x86         
+          - os: windows-latest
+            arch: arm64
+          - os: windows-latest
+            arch: arm
     
     name: windows-msvc-${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
