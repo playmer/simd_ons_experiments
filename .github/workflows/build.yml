@@ -37,7 +37,44 @@ jobs:
           cmake --preset=ninja -B build
           cmake --build build --config Release
         
-  windows:
+  windows-mingw:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            sys: mingw64
+            env: x86_64
+            arch: x86-64
+            cc: gcc
+          - os: windows-latest
+            sys: mingw32
+            env: i686
+            arch: i686
+            cc: gcc
+    name: windows-cmake-${{matrix.env}}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{matrix.sys}}
+        update: true
+        install: 
+          mingw-w64-${{matrix.env}}-toolchain
+          cmake
+          ninja
+
+    - shell: msys2 {0}
+      name: Build and Test
+      run: |
+        cmake --preset=ninja -B build
+        cmake --build build --config Release
+
+  windows-msvc:
     strategy:
       fail-fast: false
       matrix:
@@ -125,10 +162,10 @@ jobs:
         run: |
           git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/XboxDev/nxdk.git
           cd nxdk
-          $PWD/nxdk/bin/activate
+          bin/activate
           make NXDK_ONLY=y
           make tools
-          
+
       - name: Build
         run: |
           $PWD/nxdk/bin/activate
