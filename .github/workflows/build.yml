@@ -31,7 +31,7 @@ jobs:
           sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe"
           sudo apt-get update -y -qq
           sudo apt-get install libasound2-dev libpulse-dev libwebp-dev libxrandr-dev tar
-          
+
       - name: build
         run: |
           cmake --preset=ninja -B build
@@ -97,4 +97,39 @@ jobs:
           export PATH="$PATH:$PSPDEV/bin"
           
           cmake --preset=ninja -DCMAKE_TOOLCHAIN_FILE=${PSPDEV}/psp/share/pspdev.cmake -B build
+          cmake --build build --config Release
+
+          
+  Xbox:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            cc: gcc
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: lukka/get-cmake@latest
+
+      - name: install dependencies (PSP)
+        run: |
+          sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe"
+          sudo apt-get update -y -qq
+          sudo apt-get install build-essential flex bison clang lld git llvm
+          
+      - name: Download and install NXDK SDK
+        env:
+          CC: ${{ matrix.cc }}
+        run: |
+          git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/XboxDev/nxdk.git
+          cd nxdk
+          make NXDK_ONLY=y
+          make tools
+      - name: Build
+        run: |
+          $PWD/nxdk/bin/activate
+          
+          cmake --preset=ninja -DCMAKE_TOOLCHAIN_FILE=$NXDK_DIR/share/toolchain-nxdk.cmake -B build
           cmake --build build --config Release
